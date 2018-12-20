@@ -1,0 +1,14 @@
+FROM alpine:latest
+
+RUN apk upgrade \
+ && apk add --no-cache ca-certificates curl jq 
+ 
+ENV UUID=none CERT_PEM=none KEY_PEM=none VER=none
+
+ADD entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh 
+
+ENTRYPOINT  /entrypoint.sh 
+
+EXPOSE 1080
