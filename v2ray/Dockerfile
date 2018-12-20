@@ -12,4 +12,4 @@ RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT  /entrypoint.sh 
 
-EXPOSE 1080
+EXPOSE 10086

@@ -7,7 +7,7 @@ services: #服务
     container_name: v2ray  #自定义容器名
     restart: always
     ports:          #开放端口映射3306-->3306
-    - 1080:1080     #冒号左边是宿主机开放端口，冒号右边是容器开放端口
+    - 10086:10086     #冒号左边是宿主机开放端口，冒号右边是容器开放端口
     environment:    #启动变量
       UUID: none
       VER: v4.8.0
