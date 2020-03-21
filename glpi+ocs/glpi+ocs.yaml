@@ -1,0 +1,67 @@
+version: '3'
+services:
+  #OCS Container
+    ocsinventory:
+        build:
+          context: ./ocs
+          dockerfile: Dockerfile
+        #image: root_ocsinventory
+        container_name: ocs
+        privileged: true
+        restart: always
+        environment:
+          OCS_DBNAME: ocs
+          OCS_DBSERVER_READ: mariadb
+          OCS_DBSERVER_WRITE: mariadb
+          OCS_DBUSER: ocs
+          OCS_DBPASS: ocs
+        networks:
+        - et_net  
+        #volumes:
+        #  - /storage/date/ocs/usr/:/usr/share/ocsinventory-reports
+        #  - /storage/date/ocs/etc/:/etc/ocsinventory-reports
+        #  - /storage/date/ocs/lib/:/var/lib/ocsinventory-reports
+        ports:
+          - 8082:80
+  #GLPI Container
+    glpi:
+        build:
+          context: ./glpi
+          dockerfile: Dockerfile
+        #image: root_glpi
+        container_name : glpi
+        hostname: glpi
+        privileged: true  #高级权限
+        restart: always
+        ports:
+          - "8081:80"
+        #volumes:
+          #- /etc/timezone:/etc/timezone:ro
+          #- /etc/localtime:/etc/localtime:ro
+          #- /storage/date/glpi/:/var/www/html/glpi
+        environment:
+          - TIMEZONE=Asia/Shanghai
+        restart: always
+        networks:  #网络
+        - et_net
+    
+    mariadb:
+        container_name: mariadb
+        image: mariadb:10.0
+        restart: always
+        ports:
+          - 3306:3306
+        environment:
+          MYSQL_ROOT_PASSWORD: 123456
+        networks:  #网络
+        - et_net
+          
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+          - 8080:8080
+        networks:  #网络
+           - et_net
+networks:  #关于网络的服务
+  et_net:   #声明网络mynet
