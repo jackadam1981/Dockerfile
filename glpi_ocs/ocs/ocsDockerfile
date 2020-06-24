@@ -1,0 +1,10 @@
+FROM ocsinventory/ocsinventory-docker-image:2.7
+
+COPY conf/ /tmp/conf
+COPY zh_CN.tar /tmp/
+COPY OCSNG_UNIX_SERVER_2.7.tar.gz /tmp/
+COPY ./scripts/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+EXPOSE 80 443
+
+ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]

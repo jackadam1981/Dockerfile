@@ -1,0 +1,12 @@
+FROM diouxx/glpi
+
+COPY glpi-start.sh /opt/
+COPY glpi-9.4.6.tgz /root/
+COPY glpi-ocsinventoryng-1.6.1.tar.gz /root/
+
+
+RUN chmod +x /opt/glpi-start.sh
+ENTRYPOINT ["/opt/glpi-start.sh"]
+
+#Exposition des ports
+EXPOSE 80
