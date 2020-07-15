@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+    aria2:
+        image: cuteribs/aria2
+        container_name: aria2
+        privileged: true
+        restart: always
+        ports:
+        - "8080:80"
+        - "6800:6800"
+        environment:
+        - Secret=ja962309wg
+        volumes:
+        - /Storage/data/share:/data/download

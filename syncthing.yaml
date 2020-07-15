@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+    syncthing:
+        image: syncthing/syncthing
+        container_name: syncthing
+        privileged: true
+        restart: always
+        ports:
+        - "8384:8384"
+        - "22000:22000"
+        volumes:
+        - /Storage/data/share:/share
