@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+   db:
+     build:
+      context: .
+      dockerfile: Dockerfile
+	container_name: ssh_python
+    restart: always
+	ports:
+     - "2222:22"
+	privileged: true
+
