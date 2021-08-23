@@ -1,0 +1,5 @@
+FROM openwrtorg/sdk:ramips-mt7621-snapshot
+
+copy build.sh /home/build/openwrt/build.sh
+
+RUN sh build.sh
