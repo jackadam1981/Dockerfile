@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+    mssql2017:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        container_name: mssql2017
+        privileged: true
+        restart: always
+        ports:
+        - "1433:1433"
+        environment:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: 'Jack@123456'
+          MSSQL_PID: 'Express'
+        volumes:
+          # 创建真实路径到映射
+          - /storage/data/mssql:/var/opt/mssql/data
+        networks:
+         - mssql
+
+networks:
+  mssql:
