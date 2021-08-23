@@ -1,5 +1,11 @@
 FROM openwrtorg/sdk:ramips-mt7621-snapshot
 
-copy build.sh /home/build/openwrt/build.sh
+#copy build.sh /home/build/openwrt/build.sh
 
-RUN sh build.sh
+#RUN sh build.sh
+
+RUN echo "src-git passwall https://github.com/xiaorouji/openwrt-passwall" >> feeds.conf.default
+RUN ./scripts/feeds update -a
+RUN ./scripts/feeds install -a
+RUN make defconfig
+RUN make package/luci-app-passwall/{clean,compile} -j1 V=s
