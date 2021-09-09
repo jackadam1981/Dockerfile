@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+    tomcat:
+        build:
+            context: .
+            dockerfile: tomcat
+        container_name: tomcat
+        restart: always
+        ports:
+            - "8080:8080"
+        privileged: true

@@ -1,0 +1,13 @@
+FROM alpine:3.14.1
+MAINTAINER jackadam<jackadam@sina.com>
+
+RUN apk add --no-cache openjdk11
+RUN mkdir /opt/tomcat && \
+	wget https://downloads.apache.org/tomcat/tomcat-10/v10.0.10/bin/apache-tomcat-10.0.10.tar.gz &&\
+	tar xvzf apache-tomcat-10.0.10.tar.gz --strip-components 1 --directory /opt/tomcat
+	
+	
+#开放22端口
+EXPOSE 8080
+
+CMD /opt/tomcat/bin/catalina.sh run

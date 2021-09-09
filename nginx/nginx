@@ -1,0 +1,19 @@
+FROM alpine:3.14.1
+MAINTAINER jackadam<jackadam@sina.com>
+
+RUN apk add --no-cache nginx 
+RUN { \
+        echo '	server {'; \
+        echo '			listen       80;'; \
+        echo '			server_name  _;'; \
+		echo '			location / {'; \
+        echo '				root html;'; \
+        echo '				index index.html;'; \
+		echo '				}'; \
+		echo '			}'; \
+    } > /etc/nginx/http.d/default.conf
+	
+#开放22端口
+EXPOSE 80
+
+CMD nginx -g "daemon off;"
