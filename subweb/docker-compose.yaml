@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+    subconverter:
+        image: tindy2013/subconverter
+        container_name: subconverter
+        restart: always
+        ports:
+            - "25500:25500"
+    subweb:
+        # image: stilleshan/subweb
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: subweb
+        restart: always
+        ports:
+            - "18080:80"
