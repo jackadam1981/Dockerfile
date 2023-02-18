@@ -3,7 +3,7 @@ MAINTAINER Tindy X <tindy.it@gmail.com>
 
 # build minimized
 RUN apk add git g++ build-base linux-headers cmake && \
-    apk add openssl-dev curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev && \
+    apk add libressl-dev curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev && \
     git clone https://github.com/tindy2013/subconverter && \
     cd subconverter && \
     cmake . && \
