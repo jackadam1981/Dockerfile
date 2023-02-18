@@ -7,7 +7,7 @@ RUN apk add libressl-dev
 RUN apk add curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev
 RUN git clone https://github.com/tindy2013/subconverter
 RUN cd subconverter
-RUN cmake .
+RUN ls && cmake .
 RUN make -j4
 RUN mv subconverter base/
 RUN apk add curl yaml-cpp libevent
