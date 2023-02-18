@@ -1,8 +1,5 @@
-FROM alpine:latest
+FROM alpine:3.16
 MAINTAINER Tindy X <tindy.it@gmail.com>
-
-# switch repo for usage in China
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 # build minimized
 RUN apk add git g++ build-base linux-headers cmake && \
