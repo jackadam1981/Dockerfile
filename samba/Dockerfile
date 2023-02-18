@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.7
 
 RUN apk add --no-cache samba-common-tools samba-server
 RUN echo $'[global]\n\
@@ -18,4 +18,4 @@ EXPOSE 137/udp \
        138/udp \
        139/tcp \
        445/tcp
-CMD nmbd -D && smbd -D
+CMD nmbd -D && smbd -FS
