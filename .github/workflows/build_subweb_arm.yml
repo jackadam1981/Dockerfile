@@ -1,0 +1,39 @@
+name: build subweb
+
+on:
+    # 手动触发
+    workflow_dispatch:
+
+jobs:
+
+  build:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 安装 QEMU
+        uses: docker/setup-qemu-action@v1.0.2
+
+      - name: 安装 Buildx
+        uses: docker/setup-buildx-action@v1.1.2
+
+      - name: 登录 docker
+        uses: docker/login-action@v1.8.0
+        with:
+            #设置两个secrets: docker的用户名和密码
+          username: "${{ secrets.DOCKERHUB_USERNAME }}"
+          password: "${{ secrets.DOCKERHUB_PASSWORD }}"
+
+      - name: 编译上传docker image
+        uses: docker/build-push-action@v2.4.0
+        with:
+            #Dockerfile的目录
+          context: ./subweb
+            #编译的目标系统，为了方便玩客云，所以我编译了 arm/v7,amd64
+          platforms: linux/arm/v6,linux/arm/v7,amd64
+          push: true
+            #docker提交的名字
+          tags: "jackadam/subweb:23.2.18,jackadam/subweb:latest"
