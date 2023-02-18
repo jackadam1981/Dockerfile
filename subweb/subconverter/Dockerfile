@@ -6,6 +6,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 # build minimized
 RUN apk add git g++ build-base linux-headers cmake
+RUN apk add openssl-dev
 RUN apk add libressl-dev 
 RUN apk add curl-dev 
 RUN apk add rapidjson-dev 
