@@ -1,6 +1,7 @@
 name: build samba
 
 on:
+    # 手动触发
     workflow_dispatch:
 
 jobs:
@@ -22,13 +23,17 @@ jobs:
       - name: Docker login
         uses: docker/login-action@v1.8.0
         with:
+            #设置两个secrets: docker的用户名和密码
           username: "${{ secrets.DOCKERHUB_USERNAME }}"
           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
 
-      - name: Build and push images
+      - name: 编译上传docker image
         uses: docker/build-push-action@v2.4.0
         with:
+            #Dockerfile的目录
           context: ./samba
+            #编译的目标系统，为了方便玩客云，所以我编译了 arm/v7,amd64
           platforms: linux/arm/v6,linux/arm/v7,amd64
           push: true
+            #docker提交的名字
           tags: "jackadam/samba:23.2.18,jackadam/samba:latest"
