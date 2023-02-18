@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.12
 MAINTAINER Tindy X <tindy.it@gmail.com>
 
 # build minimized
