@@ -18,4 +18,4 @@ EXPOSE 137/udp \
        138/udp \
        139/tcp \
        445/tcp
-CMD nmbd -D && smbd -FS
+CMD nmbd -D && smbd -D
