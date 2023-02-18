@@ -1,4 +1,4 @@
-name: Gitea
+name: build samba
 
 on:
     workflow_dispatch:
