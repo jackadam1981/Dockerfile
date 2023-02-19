@@ -11,7 +11,7 @@ RUN get_arch=`arch` && \
 	echo $platforms && \
 	base_uri=https://api.github.com/repos/tindy2013/subconverter/releases && \
 	down_uri=https://github.com/tindy2013/subconverter/releases/download && \
-	VER=$(curl -s $base_uri | jq 'first(.[].tag_name)') && \
+	VER=$(curl -s $base_uri | jq 'first(.[].{}.tag_name)') && \
 	trueVER=${VER//\"/} && \
 	echo $trueVER && \
 	down_url=${down_uri}/${trueVER}/subconverter_${platforms}.tar.gz && \
