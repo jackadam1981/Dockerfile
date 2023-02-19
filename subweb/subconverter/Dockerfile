@@ -16,7 +16,7 @@ RUN get_arch=`arch` && \
 	echo $trueVER  && \
 	down_url=${down_uri}/${trueVER}/subconverter_${platforms}.tar.gz && \
 	filename=subconverter_${platforms}.tar.gz && \
-	echo download: $down_url && \
+	echo 🔎download: $down_url && \
 	echo $filename && \
 	curl -O $down_url 
 RUN	ls -l
