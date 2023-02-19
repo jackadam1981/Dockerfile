@@ -17,6 +17,7 @@ RUN get_arch=`arch` && \
 	echo $down_url && \
 	echo $filename && \
 	curl -O $down_uri  && \
+	ls && \
 	tar -zxvf $filename -C /
 	
 CMD  /subconverter/base/subconverter
