@@ -15,10 +15,10 @@ RUN get_arch=`arch` && \
 	trueVER=${VER//\"/} && \
 	echo $trueVER  && \
 	down_url=${down_uri}/${trueVER}/subconverter_${platforms}.tar.gz && \
-	filename=subconverter_${platforms}.tar.gz
-RUN	echo 🔎download: $down_url
-RUN	echo $filename
-RUN	curl -o $filename $down_url
+	filename=subconverter_${platforms}.tar.gz && \
+	echo 🔎download: $down_url && \
+	echo 🔎filename:$filename && \
+	curl -o $filename $down_url
 RUN	ls -l
 RUN	tar -zxvf ${filename}
 	
