@@ -1,6 +1,8 @@
 FROM alpine
 MAINTAINER Tindy X <tindy.it@gmail.com>
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
+#RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 RUN apk update && apk add curl jq
 RUN get_arch=`arch` && \
 	echo $get_arch && \
