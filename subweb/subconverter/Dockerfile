@@ -18,7 +18,8 @@ RUN get_arch=`arch` && \
 	filename=subconverter_${platforms}.tar.gz && \
 	echo 🔎download: $down_url && \
 	echo 🔎filename:$filename && \
-	curl -o $filename $down_url
+	echo "curl -o $filename $down_url"  && \
+	echo "curl -o $filename $down_url"
 RUN	ls -l
 RUN	tar -zxvf ${filename}
 	
