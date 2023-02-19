@@ -1,7 +1,7 @@
 FROM alpine
 MAINTAINER Tindy X <tindy.it@gmail.com>
 
-RUN apk update && apk add curl
+RUN apk update && apk add curl jq
 RUN get_arch=`arch` && \
 	echo $get_arch && \
 	if [[ $get_arch = "armv7l" ]];then platforms="armv7";else echo Bad; fi && \
