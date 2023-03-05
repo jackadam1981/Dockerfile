@@ -13,6 +13,7 @@ WORKDIR /app
 RUN npm install
 RUN npm run build
 RUN cp /app/start.sh  /app/dist/
+RUN cd /app/dist && ls -lh
 
 FROM nginx:1.16-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
