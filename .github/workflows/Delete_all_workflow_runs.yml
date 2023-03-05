@@ -14,7 +14,13 @@ jobs:
         with:
           token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
           run_conclusions: |
+            action_required
             cancelled
+            failure
+            neutral
+            success
             skipped
+            stale
+            timed_out
           save_period: '01:00:00'
-          save_min_runs_number: 0
+          save_min_runs_number: 1
