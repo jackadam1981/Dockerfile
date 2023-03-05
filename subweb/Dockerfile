@@ -5,6 +5,8 @@ RUN apk add --update git
 RUN git clone https://github.com/stilleshan/subweb /app
 WORKDIR /app
 RUN npm config get registry
+npm config set registry https://registry.npm.taobao.org
+RUN npm config get registry
 RUN npm install
 RUN npm run build
 
