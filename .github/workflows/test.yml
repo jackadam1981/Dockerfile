@@ -1,20 +1,18 @@
 name: GitHub Actions test
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [workflow_dispatch]
-name: build_test
 jobs:
-  build:
-    name: Example
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$('%Y%m%d%H')"
-      - name: Test with environment variables
-        run: echo $TAG_NAME - $RELEASE_NAME
-        env:
-          TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
-          RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
-      - name: Test with input
-        uses: actions/hello-world-docker-action@master
-        with:
-          who-to-greet: Mona-the-Octocat-${{ steps.date.outputs.date }}
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
