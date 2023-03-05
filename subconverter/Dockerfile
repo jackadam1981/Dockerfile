@@ -27,7 +27,7 @@ RUN get_arch=`arch` && \
 	echo 🔎download: $down_url && \
 	echo 🔎filename:$filename
 RUN	echo "curl -L -o $filename $down_url"  && \
-	curl -o $filename $down_url && \
+	curl -L -o $filename $down_url && \
 	tar -zxvf ${filename} -C /
 	
 CMD  /subconverter/base/subconverter
