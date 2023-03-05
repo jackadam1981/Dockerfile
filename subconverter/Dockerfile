@@ -8,6 +8,7 @@ RUN get_arch=`arch` && \
 	echo $get_arch && \
 	if [[ $get_arch = "armv7l" ]];then platforms="armv7"; fi && \
 	if [[ $get_arch = "x86_64" ]];then platforms="linux64"; fi && \
+	if [[ $get_arch = "aarch64" ]];then platforms="aarch64"; fi && \
 	echo 目标：$platforms  && \
 	base_uri=https://api.github.com/repos/tindy2013/subconverter/releases && \
 	down_uri=https://github.com/tindy2013/subconverter/releases/download && \
