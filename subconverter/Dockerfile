@@ -19,7 +19,7 @@ RUN get_arch=`arch` && \
 	echo 🔎download: $down_url && \
 	echo 🔎filename:$filename && \
 	echo "curl -L -o $filename $down_url"  && \
-	curl -L -o $filename $down_url
+	curl -L -o $filename $down_url && \
 	ls -l && \
 	tar -zxvf ${filename}
 	
