@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v3.1.1
         with:
           context: ${{ github.event.inputs.project }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:latest
