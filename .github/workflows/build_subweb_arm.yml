@@ -1,8 +1,6 @@
 name: build subweb
 
-on:
-    # 手动触发
-    workflow_dispatch:
+on: [push,workflow_dispatch]
 
 jobs:
 

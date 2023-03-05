@@ -2,7 +2,7 @@ name: build subconverter
 
 # on:
     # workflow_dispatch:
-on: [push,workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
 
