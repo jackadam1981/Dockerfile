@@ -47,4 +47,4 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:latest
-            ${{ secrets.DOCKERHUB_PASSWORD }}/${{ github.event.inputs.project }}:${{ env.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:${{ env.tag }}
