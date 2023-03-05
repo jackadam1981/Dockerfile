@@ -17,5 +17,6 @@ RUN cd /app/dist && ls -lh
 
 FROM nginx:1.16-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/start.sh /app
 EXPOSE 80
 CMD [ "sh", "-c", "/app/start.sh" ]
