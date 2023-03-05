@@ -31,7 +31,8 @@ jobs:
             #Dockerfile的目录
           context: ./subweb
             #编译的目标系统，为了方便玩客云，所以我编译了 arm/v7,amd64
-          platforms: linux/arm/v6,linux/arm/v7,amd64,linux/arm64
+          # platforms: linux/arm/v6,linux/arm/v7,amd64,linux/arm64
+          platforms: amd64
           push: true
             #docker提交的名字
           tags: "jackadam/subweb:23.3.5,jackadam/subweb:latest"
