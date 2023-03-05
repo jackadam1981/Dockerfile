@@ -31,9 +31,9 @@ jobs:
         uses: docker/build-push-action@v2.4.0
         with:
             #Dockerfile的目录
-          context: ./subweb/subconverter
+          context: ./subconverter
             #编译的目标系统，为了方便玩客云，所以我编译了 arm/v7,amd64
-          platforms: amd64,linux/arm/v7
+          platforms: amd64,arm64,linux/arm/v6,linux/arm/v7
           push: true
             #docker提交的名字
-          tags: "jackadam/subconverter:23.2.18,jackadam/subconverter:latest"
+          tags: "jackadam/subconverter:23.3.5,jackadam/subconverter:latest"
