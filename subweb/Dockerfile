@@ -4,6 +4,7 @@ LABEL maintainer="Stille <stille@ioiox.com>"
 RUN apk add --update git
 RUN git clone https://github.com/stilleshan/subweb /app
 WORKDIR /app
+RUN npm config get registry
 RUN npm install
 RUN npm run build
 
