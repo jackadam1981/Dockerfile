@@ -6,8 +6,8 @@ MAINTAINER Tindy X <tindy.it@gmail.com>
 
 # build minimized
 RUN apk update && apk upgrade
-RUN apk add libressl-dev
-RUN	apk add git g++ build-base linux-headers cmake  curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev
+RUN apk add cmake libressl-dev
+RUN	apk add git g++ build-base linux-headers curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev
 RUN    git clone https://github.com/tindy2013/subconverter && \
     cd subconverter && \
     cmake . && \
