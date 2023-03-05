@@ -1,6 +1,6 @@
 name: GitHub Actions test
 on: [workflow_dispatch]
-name: build
+name: build_test
 jobs:
   build:
     name: Example
