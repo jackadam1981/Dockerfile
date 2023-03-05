@@ -7,9 +7,9 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # build minimized
 RUN apk add git g++ build-base linux-headers cmake && \
     apk add libressl-dev curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev
-RUN git clone https://github.com/tindy2013/subconverter && \
-    cd subconverter
-RUN cmake .
+RUN git clone https://github.com/tindy2013/subconverter
+RUN cd subconverter && \
+	cmake .
 RUN make -j1 && \
     mv subconverter base/ && \
     apk add curl yaml-cpp libevent && \
