@@ -12,5 +12,6 @@ RUN npm run build
 FROM nginx:1.16-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY . /app
+RUN sed -i "/ listen 80;/a\ listen [::]:80;" /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD [ "sh", "-c", "/app/start.sh" ]
