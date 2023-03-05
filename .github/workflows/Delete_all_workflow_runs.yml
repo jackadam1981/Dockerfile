@@ -1,3 +1,10 @@
+name: Delete 1H workflow runs
+on:
+  workflow_dispatch:
+# Run monthly, at 00:00 on the 1st day of month.
+
+
+
 jobs:
   delete_runs:
     runs-on: ubuntu-latest
