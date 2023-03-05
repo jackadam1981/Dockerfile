@@ -1,19 +1,8 @@
-FROM alpine:3.10
-MAINTAINER Tindy X <tindy.it@gmail.com>
+FROM alpine:latest
 
-# switch repo for usage in China
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+RUN apt add curl jq && \
+	VER=$(curl -s https://api.github.com/repos/tindy2013/subconverter/releases/latest | grep tag_name | cut -d '"' -f 4) && \
+	URL=$(curl -s https://api.github.com/repos/tindy2013/subconverter/releases/tags/${VER} | jq .assets[0].browser_download_url | tr -d \") && \
+	echo $VER $URL
 
-# build minimized
-RUN apk add git g++ build-base linux-headers cmake && \
-    apk add libressl-dev curl-dev rapidjson-dev libevent-dev pcre-dev yaml-cpp-dev
-RUN git clone https://github.com/tindy2013/subconverter
-RUN cd subconverter && \
-	cmake .
-RUN make -j1 && \
-    mv subconverter base/ && \
-    apk add curl yaml-cpp libevent && \
-    apk del git gcc g++ build-base linux-headers cmake libressl-dev curl-dev rapidjson-dev libevent-dev yaml-cpp-dev
-
-# set entry
-CMD /subconverter/base/subconverter
+#CMD /subconverter/base/subconverter
