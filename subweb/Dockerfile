@@ -12,7 +12,7 @@ WORKDIR /app
 #RUN npm config get registry
 RUN npm install
 RUN npm run build
-RUN cp /app/start.sh  /app/dist/start.sh
+RUN cp /app/start.sh  /app/dist/
 
 FROM nginx:1.16-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
