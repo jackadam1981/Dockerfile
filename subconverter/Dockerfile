@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.12
 MAINTAINER Tindy X <tindy.it@gmail.com>
 
 # switch repo for usage in China
