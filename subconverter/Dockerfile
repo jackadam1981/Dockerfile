@@ -5,6 +5,7 @@ MAINTAINER Tindy X <tindy.it@gmail.com>
 
 RUN apk update && apk add curl jq
 RUN get_arch=`arch` && \
+	echo $get_arch && \
 	if [[ $get_arch = "armv7l" ]];then platforms="armv7"; fi && \
 	if [[ $get_arch = "x86_64" ]];then platforms="linux64"; fi && \
 	echo 目标：$platforms  && \
