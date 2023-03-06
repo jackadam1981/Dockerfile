@@ -1,4 +1,4 @@
-name: "Build and push amd64 armv6 armv7"
+name: "Build and push amd64 arm64 armv7"
 
 on: 
   workflow_dispatch:
