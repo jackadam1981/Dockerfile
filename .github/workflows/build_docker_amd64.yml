@@ -1,4 +1,4 @@
-name: "Build and push to docker hub amd64"
+name: "Build and push amd64"
 
 on: 
   workflow_dispatch:
