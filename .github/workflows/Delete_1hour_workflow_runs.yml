@@ -1,4 +1,4 @@
-name: Delete 1H workflow runs
+name: Delete 1hour workflow runs
 on:
   workflow_dispatch:
 # Run monthly, at 00:00 on the 1st day of month.
