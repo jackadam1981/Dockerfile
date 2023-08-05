@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.8'
 services:
     aria2:
         image: cuteribs/aria2
@@ -9,6 +9,6 @@ services:
         - "8080:80"
         - "6800:6800"
         environment:
-        - Secret=ja962309wg
+        - Secret=L5;Y@?lRpLHXEuDh0'Ck
         volumes:
-        - /Storage/data/share:/data/download
+        - ./download:/data/download

@@ -9,4 +9,4 @@ services:
         - "8384:8384"
         - "22000:22000"
         volumes:
-        - /Storage/data/share:/share
+        - ./share:/share

@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+    dosgame-web-docker:
+        container_name: dosgame
+        ports:
+            - '262:262'
+        image: 'oldiy/dosgame-web-docker:latest'
+        #volumes:
+        #    - './games:/app/static/games'
+        
+        
+        
+        
+#项目地址：https://github.com/rwv/chinese-dos-games
+#内有添加游戏说明。

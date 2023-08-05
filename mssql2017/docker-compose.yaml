@@ -9,11 +9,11 @@ services:
         - "1433:1433"
         environment:
           ACCEPT_EULA: Y
-          SA_PASSWORD: 'Jack@123456'
+          SA_PASSWORD: 'gQVQYjGrkpVnI3%5jmO,'
           MSSQL_PID: 'Express'
         volumes:
           # 创建真实路径到映射
-          - /storage/data/mssql:/var/opt/mssql/data
+          - ./data:/var/opt/mssql/data
         networks:
          - mssql
 

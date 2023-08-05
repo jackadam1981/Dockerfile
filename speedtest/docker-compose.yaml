@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+    speedtest:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: speedtest
+        restart: always
+        
+        environment:
+            - TITLE=内网网速测试
+            - MODE=standalone
+            - TELEMETRY=true
+            - ENABLE_ID_OBFUSCATION=true
+            - PASSWORD=yourPasswordHere
+            - WEBPORT=80
+        ports:
+            - '8081:80'
+        volumes:
+          - ./database:/database
