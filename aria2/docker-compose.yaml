@@ -9,6 +9,11 @@ services:
         - "8080:80"
         - "6800:6800"
         environment:
-        - Secret=L5;Y@?lRpLHXEuDh0'Ck
+            Secret： /run/secrets/aria2_password
         volumes:
         - ./download:/data/download
+        secrets:
+            - aria2_password
+secrets:
+   aria2_password:
+     file: .password.txt
