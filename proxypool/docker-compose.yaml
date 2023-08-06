@@ -1,0 +1,38 @@
+# docker run -d --restart=always \
+  # --name=proxypool \
+  # -p 12580:12580 \
+  # -v ./config:/config \
+  # lukemin/ssrlive-proxypool \
+  # -c /config/config.yaml
+  
+version: "3.3"
+
+services:
+
+  proxypool:
+    container_name: proxypool
+    image: lukemin/ssrlive-proxypool
+    restart: always
+    command: -c /config/config.yaml
+    volumes:
+      - ./config:/config
+    ports:
+      - 12555:12580
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: proxypool_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: JymgBuiB8nhCV8BZ5ASt
+      POSTGRES_USER: pooluser
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    ports:
+      - 15432:5432
+      
+networks:
+  default:
+    external: true
+    name: mynet

@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web:
+    image: whyour/qinglong:latest
+    volumes:
+      - ./data:/ql/data
+    ports:
+      - "5700:5700"
+    restart: unless-stopped
+    
+networks:
+  default:
+    external: true
+    name: mynet

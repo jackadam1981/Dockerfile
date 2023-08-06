@@ -1,0 +1,96 @@
+# 模糊抓取订阅链接
+# - type: webfuzzsub
+  # options:
+    # url: https://raw.githubusercontent.com/du5/free/master/file/0207/clash.yaml
+    
+# # 模糊抓取订阅链接
+# - type: webfuzzsub
+  # options:
+    # url: https://raw.githubusercontent.com/ssrsub/ssr/master/Clash.yml
+
+
+# # 订阅链接
+# - type: subscribe
+  # options:
+    # url: https://raw.githubusercontent.com/ssrsub/ssr/master/trojan
+
+
+# # 网页模糊抓取
+# - type: webfuzz
+  # options:
+    # url: https://merlinblog.xyz/wiki/freess.html
+
+# # # tg频道抓取
+# - type: tgchannel
+  # options:
+    # channel: ssrList
+    # num: 500
+    
+# # tg频道抓取
+# - type: tgchannel
+  # options:
+    # channel: MeAndMyPY
+    # num: 500
+    
+# # 翻墙党论坛抓取
+# - type: web-fanqiangdang
+  # options:
+    # url: https://fanqiangdang.com/forum-48-1.html
+
+# # clash格式订阅链接
+# - type: clash
+  # options:
+    # url: https://raw.githubusercontent.com/du5/free/master/file/0909/Clash.yaml
+
+# # 某个网站抓取
+# - type: web-freessrxyz
+  # options:
+  
+# - type: subscribe
+  # options:
+    # url: https://github.jackadam.cf/https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/v2ray.config.txt
+  
+
+  
+# https://raw.githubusercontent.com/mfuu/v2ray/master/clash.yaml
+# https://raw.githubusercontent.com/anaer/Sub/main/clash.yaml
+# https://raw.githubusercontent.com/pojiezhiyuanjun/freev2/master/0312clash.yml
+# https://raw.githubusercontent.com/oslook/clash-freenode/main/clash.yaml
+# https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
+# https://cdn.jsdelivr.net/gh/learnhard-cn/free_proxy_ss@main/clash/clash.provider.yaml
+# https://raw.githubusercontent.com/vveg26/get_proxy/main/dist/clash.config.yaml
+# https://tt.vg/freeclash
+# https://kxswa.tk/clash
+  
+#以下验证正常 
+
+
+# # 订阅链接
+- type: subscribe
+  options:
+    url: https://sub.jackadam.cf/sub
+
+- type: subscribe
+  options:
+    url: http://proxies.haisto.cn/vmess/sub
+    
+    
+- type: subscribe
+  options:
+    url: http://proxies.haisto.cn/trojan/sub
+        
+- type: subscribe
+  options:
+    url: https://github.jackadam.cf/https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray
+    
+- type: clash
+  options:
+    url: https://anaer.github.io/Sub/clash.yaml
+
+- type: clash
+  options:
+    url: http://onecloud.jackadam.ml:25500/sub?target=clash&url=https%3A%2F%2Fgithub.jackadam.cf%2Fhttps%3A%2F%2Fraw.githubusercontent.com%2Ftbbatbb%2FProxy%2Fmaster%2Fdist%2Fclash.config.yaml
+  
+- type: clash
+  options:
+    url: http://onecloud.jackadam.ml:25500/sub?target=clash&url=https%3A%2F%2Fgithub.jackadam.cf%2Fhttps%3A%2F%2Fraw.githubusercontent.com%2Fvveg26%2Fget_proxy%2Fmain%2Fdist%2Fclash.config.yaml
