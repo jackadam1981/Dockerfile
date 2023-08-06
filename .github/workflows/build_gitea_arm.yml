@@ -22,7 +22,7 @@ jobs:
             fi
           fi
       - name: Return new version or cancel build
-        uses: actions/github-script@v3.1.1
+        uses: actions/github-script@v6
         id: check
         with:
           script: |
