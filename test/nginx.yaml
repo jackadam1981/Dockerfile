@@ -1,0 +1,16 @@
+version: "3" #版本3
+services: #服务
+  nginx:   #服务名
+    image: nginx:stable-alpine   #镜像名称
+    privileged: true  #高级权限
+    tty: true         #开一个终端
+    container_name: nginx  #自定义容器名
+    restart: always
+    networks:       #网络
+    - et_net         #属于网络mynet
+    ports:          #开放端口映射
+    - 80:80     #冒号左边是宿主机开放端口，冒号右边是容器开放端口
+    volumes:
+    - ./nginx.conf:/etc/nginx/conf.d
+networks:  #关于网络的服务
+  et_net:   #声明网络mynet
