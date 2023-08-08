@@ -11,9 +11,9 @@ jobs:
 
     steps:
     
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          repository: https://gitea.com/gitea/act_runner.git
+          repository: gitea.com/gitea/act_runner.git
 
 
       - name: Setup QEMU
