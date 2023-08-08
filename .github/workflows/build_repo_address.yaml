@@ -11,7 +11,7 @@ jobs:
 
     steps:
     
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           repository: https://gitea.com/gitea/act_runner.git
 
