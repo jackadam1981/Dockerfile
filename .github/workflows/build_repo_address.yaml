@@ -14,8 +14,9 @@ jobs:
         with:
             # Repository name with owner. For example, actions/checkout
             # Default: ${{ github.repository }}
-            repository: 'gitea/act_runner'
             github-server-url: 'https://gitea.com'
+            repository: 'gitea/act_runner'
+            ref: 'main'
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
