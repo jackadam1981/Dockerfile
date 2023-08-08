@@ -11,12 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-            # Repository name with owner. For example, actions/checkout
-            # Default: ${{ github.repository }}
-            github-server-url: 'https://gitea.com'
-            repository: 'gitea/act_runner'
-            ref: 'main'
+      - run: git clone https://gitea.com/gitea/act.git
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
