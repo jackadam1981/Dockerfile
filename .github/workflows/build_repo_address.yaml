@@ -11,10 +11,11 @@ jobs:
 
     steps:
     
-      - uses: actions/checkout@v3
-        with:
-          repository: gitea.com/gitea/act_runner.git
-
+      - name: Clone custom repository
+        run: git clone https://gitea.com/gitea/act_runner.git custom-repo
+        
+      - name: Change directory to custom repository
+        run: cd custom-repo
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
