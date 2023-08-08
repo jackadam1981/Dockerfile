@@ -10,25 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: sudosubin/git-clone-action@v1
-        with:
-          # Repository owner and name. Ex: sudosubin/git-clone-action
-          # Default: gitea/act_runner
-          repository: 'gitea/act_runner'
-          # Git host platform. Ex: github, gitlab, bitbucket, gitee, or else (git.suckless.org, ...)
-          # Default: 'gitea.com'
-          platform: 'gitea.com'
-      
-          # Git branch, tag, or specific commit SHA to checkout.
-          # Default: (auto default branch)
-          ref: ''
-      
-          # Relative path from current directory, where to clone.
-          path: ''
-      
-          # Todos below
-          # fetch-depth
-          # submodules
+      - uses: actions/checkout@v3
+          with:
+            # Repository name with owner. For example, actions/checkout
+            # Default: ${{ github.repository }}
+            repository: 'gitea/act_runner'
+            github-server-url: 'https://gitea.com/'
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
