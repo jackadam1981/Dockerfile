@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: https://github.com/actions/checkout@v3  
       - run: git clone https://gitea.com/gitea/act_runner.git
+
+      - run: cd act_runner
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
