@@ -1,4 +1,4 @@
-name: Gitea
+name: Build Gitea
 
 on:
     workflow_dispatch:
