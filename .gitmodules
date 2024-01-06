@@ -1,0 +1,3 @@
+[submodule "iptv-sources"]
+	path = iptv-sources
+	url = https://github.com/HerbertHe/iptv-sources.git
