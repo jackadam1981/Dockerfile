@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+#Database management in a single PHP file.
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+      
+#MariaDB Container for ocsapplication
+  ocsdb:
+    image: mariadb:10.7
+    container_name: ocsdb
+    hostname: ocsdb
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=root_password
+      - MARIADB_DATABASE=ocsweb
+      - MARIADB_USER=ocs_user
+      - MARIADB_PASSWORD=ocs_pass
+    volumes :
+      - ./ocs_sql_init/:/docker-entrypoint-initdb.d/
+      - .ocs_db:/var/lib/mysql
+      
+#ocsinventory Container     
+  ocsapplication:
+    image: ocsinventory/ocsinventory-docker-image:2.12.1
+    container_name : ocsinventory
+    hostname: ocsinventory
+    restart: always
+    ports:
+      - "81:80"
+    volumes:
+      - .perlcomdata:/etc/ocsinventory-server
+      - .ocsreportsdata:/usr/share/ocsinventory-reports/ocsreports/extensions
+      - .varlibdata:/var/lib/ocsinventory-reports
+      - .httpdconfdata:/etc/apache2/conf-available
+      - .profilesconfdata:/usr/share/ocsinventory-reports/ocsreports/config/profiles
+    environment:
+      OCS_DB_SERVER: ocsdb
+      OCS_DB_USER: ocs_user
+      OCS_DB_PASS: ocs_pass
+      OCS_DB_NAME: ocsweb
+      #See documentation to set up SSL for MySQL
+      OCS_SSL_ENABLED: 0
+      OCS_DBI_PRINT_ERROR: 0
+    links:
+      - ocsdb
+    depends_on:
+      - ocsdb   
+
+#MariaDB Container for glpi-project
+  glpidb:
+    image: mariadb:10.7
+    container_name: glpidb
+    hostname: glpidb
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=root_password
+      - MARIADB_DATABASE=glpidb
+      - MARIADB_USER=glpi_user
+      - MARIADB_PASSWORD=glpi_pass
+    volumes :
+      - .glpi_db:/var/lib/mysql
+
+
+#GLPI Container
+  glpi:
+    image: jackadam/ghcr.io.glpi-project.glpi-nightly:main
+    container_name : glpi
+    hostname: glpi
+    restart: always
+    volumes:
+      - .glpi_plugins:/var/www/glpi/plugins
+    ports:
+      - "80:80"
+    links:
+      - glpidb
+    depends_on:
+      - glpidb  
+      

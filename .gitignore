@@ -1,0 +1,10 @@
+/glpi_ocs/.glpi_db
+/glpi_ocs/.glpi_plugins
+/glpi_ocs/.httpdconfdata
+/glpi_ocs/.ocs_db
+/glpi_ocs/.ocs_sql_init
+/glpi_ocs/.ocsreportsdata
+/glpi_ocs/.perlcomdata
+/glpi_ocs/.profilesconfdata
+/glpi_ocs/.varlibdata
+/speedtest/database
