@@ -1,0 +1,30 @@
+services:
+
+  send:
+    image: mozilla/send:latest
+    container_name: send-web
+    ports:
+      - "1444:1443"
+    volumes:
+      - ./send_conf/config.js:/app/server/config.js #默认配置文件
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+
+      
+      
+  redis:
+    image: redis:alpine
+    container_name: redis
+    
+  proxy:
+      image: nginx
+      container_name: send-proxy
+      volumes:
+       - ./templates:/etc/nginx/templates
+       - ./certificate/Server:/etc/nginx/certificate
+      ports:
+       - "1443:1443"
+      environment:
+        - NGINX_HOST=192.168.2.22:1443
+        - NGINX_PORT=1443

@@ -1,0 +1,12 @@
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth, clientAuth
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = 192.168.2.22
+#IP.2 = 192.168.11.101
+#IP.3 = 192.168.10.102
+#DNS.1 = node-1.example.com
+#DNS.2 = node-2.example.com
