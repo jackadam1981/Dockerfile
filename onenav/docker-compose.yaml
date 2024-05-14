@@ -1,13 +1,12 @@
+version: '3'
 services:
   onenav:
     image: 'helloz/onenav:latest'
     container_name: onenav
     ports:
       - "3080:80"
-      - "3088:88"
     volumes:
       - './data:/data/wwwroot/default/data'
-      - './download:/download'
-      - './virtual.conf:/etc/nginx/conf.d/virtual.conf'
+    
     restart:
       always
