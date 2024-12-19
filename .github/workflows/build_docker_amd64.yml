@@ -49,6 +49,13 @@ jobs:
           git fetch --all
           git checkout ${{ github.event.inputs.version }}
 
+      - name: Prepare Docker tags
+        id: prepare_tags
+        run: |
+          SAFE_VERSION="${{ github.event.inputs.version }}" 
+          SAFE_VERSION="${SAFE_VERSION//\//_}"
+          echo "safe_version=$SAFE_VERSION" >> $GITHUB_ENV
+
       - name: Set tag
         id: tag
         run: |
@@ -79,4 +86,4 @@ jobs:
           platforms: ${{ github.event.inputs.platforms }}
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project_name }}:${{ github.event.inputs.version | replace('/', '_') }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project_name }}:${{ env.safe_version }}
