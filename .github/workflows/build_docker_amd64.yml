@@ -79,4 +79,4 @@ jobs:
           platforms: ${{ github.event.inputs.platforms }}
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project_name }}:${{ github.event.inputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project_name }}:${{ github.event.inputs.version | replace('/', '_') }}
