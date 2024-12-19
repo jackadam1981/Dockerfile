@@ -3,18 +3,22 @@ name: "Build and push what you want"
 on:
   workflow_dispatch:
     inputs:
+
       project_name:
         description: "Project name (e.g., owner/repo)"
         required: false
         default: "go-gitea/gitea"
+
       repo_url:
         description: "Repository URL"
         required: false
         default: ""
+
       platforms:
         description: "Platforms (comma-separated, e.g., linux/amd64,linux/arm64)"
         required: true
         default: "linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6"
+
       version:
         description: 'Version (branch, tag, or commit hash)'
         required: false
@@ -71,9 +75,8 @@ jobs:
       - name: Build and push to docker hub
         uses: docker/build-push-action@v6
         with:
-          context: ${{ github.event.inputs.project }}
+          context: .
           platforms: ${{ github.event.inputs.platforms }}
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:${{ env.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project_name }}:${{ github.event.inputs.version }}
