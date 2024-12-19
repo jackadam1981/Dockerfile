@@ -1,23 +1,47 @@
-name: "Build and push amd64"
+name: "Build and push what you want"
 
-on: 
+on:
   workflow_dispatch:
     inputs:
-      project:
-        description: 'Project'
+      project_name:
+        description: "Project name (e.g., owner/repo)"
+        required: false
+        default: "go-gitea/gitea"
+      repo_url:
+        description: "Repository URL"
+        required: false
+        default: ""
+      platforms:
+        description: "Platforms (comma-separated, e.g., linux/amd64,linux/arm64)"
         required: true
-        default: 
-        
+        default: "linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6"
+      version:
+        description: 'Version (branch, tag, or commit hash)'
+        required: false
+        default: 'main'  # 默认使用主分支
+
 run-name: ${{ github.actor }} is testing build ${{ github.event.inputs.project }} 🚀
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
+      - name: Checkout based on input
+        run: |
+          if [ -n "${{ github.event.inputs.repo_url }}" ]; then
+            echo "Cloning from URL: ${{ github.event.inputs.repo_url }}"
+            git clone ${{ github.event.inputs.repo_url }} .
+          elif [ -n "${{ github.event.inputs.project_name }}" ]; then
+            echo "Cloning from project name: ${{ github.event.inputs.project_name }}"
+            git clone https://github.com/${{ github.event.inputs.project_name }}.git .
+          else
+            echo "No valid input provided. Please provide either a project name or a repository URL."
+            exit 1
+
+      - name: Checkout specified version
+        run: |
+          git fetch --all
+          git checkout ${{ github.event.inputs.version }}
 
       - name: Set tag
         id: tag
@@ -28,6 +52,7 @@ jobs:
           else
             echo "tag=$(date +%Y)-$(date +%m)-$(date +%d)" >> $GITHUB_ENV
           fi
+          
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -37,7 +62,7 @@ jobs:
       - name: 登录 docker
         uses: docker/login-action@v2
         with:
-            #设置两个secrets: docker的用户名和密码
+          #设置两个secrets: docker的用户名和密码
           username: "${{ secrets.DOCKERHUB_USERNAME }}"
           password: "${{ secrets.DOCKERHUB_PASSWORD }}"
 
@@ -45,7 +70,7 @@ jobs:
         uses: docker/build-push-action@v3.1.1
         with:
           context: ${{ github.event.inputs.project }}
-          platforms: linux/amd64
+          platforms: ${{ github.event.inputs.platforms }}
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:latest
