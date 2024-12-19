@@ -26,6 +26,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout based on input
         run: |
           if [ -n "${{ github.event.inputs.repo_url }}" ]; then
@@ -37,6 +38,7 @@ jobs:
           else
             echo "No valid input provided. Please provide either a project name or a repository URL."
             exit 1
+          fi
 
       - name: Checkout specified version
         run: |
@@ -52,7 +54,7 @@ jobs:
           else
             echo "tag=$(date +%Y)-$(date +%m)-$(date +%d)" >> $GITHUB_ENV
           fi
-          
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
