@@ -7,12 +7,12 @@ on:
       project_name:
         description: "Project name (e.g., owner/repo)"
         required: false
-        default: "go-gitea/gitea"
+        default: "gitea"
 
       repo_url:
         description: "Repository URL"
         required: false
-        default: ""
+        default: "https://github.com/go-gitea/gitea.git"
 
       platforms:
         description: "Platforms (comma-separated, e.g., linux/amd64,linux/arm64)"
@@ -31,18 +31,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout based on input
+      - name: Checkout based on input URL
         run: |
-          if [ -n "${{ github.event.inputs.repo_url }}" ]; then
-            echo "Cloning from URL: ${{ github.event.inputs.repo_url }}"
-            git clone ${{ github.event.inputs.repo_url }} .
-          elif [ -n "${{ github.event.inputs.project_name }}" ]; then
-            echo "Cloning from project name: ${{ github.event.inputs.project_name }}"
-            git clone https://github.com/${{ github.event.inputs.project_name }}.git .
-          else
-            echo "No valid input provided. Please provide either a project name or a repository URL."
-            exit 1
-          fi
+          echo "Cloning from URL: ${{ github.event.inputs.repo_url }}"
+          git clone ${{ github.event.inputs.repo_url }} .
 
       - name: Checkout specified version
         run: |
@@ -52,7 +44,9 @@ jobs:
       - name: Prepare Docker tags
         id: prepare_tags
         run: |
-          SAFE_VERSION="${{ github.event.inputs.version }}" 
+          SAFE_VERSION="${{ github.event.inputs.version }}"
+          # 使用正则表达式提取从第一个数字开始的部分
+          SAFE_VERSION=$(echo "$SAFE_VERSION" | sed -E 's/^[^0-9]*([0-9].*)/\1/')
           SAFE_VERSION="${SAFE_VERSION//\//_}"
           echo "safe_version=$SAFE_VERSION" >> $GITHUB_ENV
 
