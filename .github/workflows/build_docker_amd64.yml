@@ -24,7 +24,7 @@ on:
         required: false
         default: 'main'  # 默认使用主分支
 
-run-name: build ${{ github.event.inputs.project_name }} 🚀 with ${{ github.event.inputs.platforms }}
+run-name: build ${{ github.event.inputs.project_name }} ${{ github.event.inputs.version }}🚀 with ${{ github.event.inputs.platforms }}
 
 jobs:
   build:
