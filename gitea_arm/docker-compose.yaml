@@ -1,16 +1,16 @@
-version: "2"
-
 services:
-  server:
-    #image: gitea/gitea:1.20.2-rootless
-    image: jackadam/gitea
-    restart: always
-    privileged: true
-    volumes:
-      - ./data:/var/lib/gitea
-      - ./config:/etc/gitea
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "3090:3000"
-      - "2222:2222"
+    gitea-arm:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+
+                # check in URL: https://dl.gitea.com/gitea/
+                GITEA_BIN_VERSION: 1.23.1
+                # check in URL: https://github.com/go-gitea/gitea/branches
+                GITEA_SOURCE_VERSION: release/v1.23
+                # platforms: linux-amd64,arm64,386,arm-5,arm-6
+                PLATFORMS: arm-6
+        ports:
+            - "18022:22"
+            - "3000:3000"
