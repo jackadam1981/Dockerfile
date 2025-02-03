@@ -1,16 +1,19 @@
-name: "Build and push amd64 arm64 armv7 armv6"
+name: "Build Docker File"
 
 on: 
   workflow_dispatch:
     inputs:
       project:
-        description: 'GitHub project or URL'
-        required: true
+        description: 'GitHub project'
         default: ''
       dockerfile:
         description: 'Path to Dockerfile'
         required: true
         default: 'Dockerfile'
+      tag:
+        description: 'Docker image tag'
+        required: true
+        default: 'latest'
         
 run-name: ${{ github.actor }} is testing build ${{ github.event.inputs.project }} 🚀
 
@@ -21,10 +24,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: '${{ github.event.inputs.project }}'
+          repository: ${{ github.event.inputs.project || github.repository }}
           submodules: true
-          # If the input is a URL, you might need to handle it differently
-          # This example assumes it's a GitHub project
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -41,10 +42,10 @@ jobs:
       - name: Build and push to docker hub
         uses: docker/build-push-action@v6
         with:
-          context: ${{ github.event.inputs.project }}
+          context: ${{ github.event.inputs.project || '.' }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           push: true
           file: ${{ github.event.inputs.dockerfile }}
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project }}:${{ env.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project || github.repository }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project || github.repository }}:${{ github.event.inputs.tag }}
