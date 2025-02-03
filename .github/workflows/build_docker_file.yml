@@ -18,7 +18,7 @@ on:
       dockerfile:
         description: 'Path to Dockerfile'
         required: true
-        default: 'Dockerfile'
+        default: 'gitea_arm/Dockerfile'
       platforms:
         description: 'Target platforms for the Docker image'
         required: true
@@ -52,7 +52,7 @@ jobs:
       - name: Build and push to docker hub
         uses: docker/build-push-action@v6
         with:
-          context: ${{ github.event.inputs.project || '.' }}
+          context: .
           platforms: ${{ github.event.inputs.platforms }}
           push: true
           file: ${{ github.event.inputs.dockerfile }}
