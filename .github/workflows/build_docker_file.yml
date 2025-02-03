@@ -3,17 +3,27 @@ name: "Build Docker File"
 on: 
   workflow_dispatch:
     inputs:
+      repo_name:
+        description: 'Repository name for Docker image'
+        required: true
+        default: ''
+      tag:
+        description: 'Docker image tag'
+        required: true
+        default: 'latest'
       project:
         description: 'GitHub project'
+        required: true
         default: ''
       dockerfile:
         description: 'Path to Dockerfile'
         required: true
         default: 'Dockerfile'
-      tag:
-        description: 'Docker image tag'
+      platforms:
+        description: 'Target platforms for the Docker image'
         required: true
-        default: 'latest'
+        default: 'linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6'
+      
         
 run-name: ${{ github.actor }} is testing build ${{ github.event.inputs.project }} 🚀
 
@@ -33,7 +43,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: 登录 docker
+      - name: login docker
         uses: docker/login-action@v3
         with:
           username: "${{ secrets.DOCKERHUB_USERNAME }}"
@@ -43,9 +53,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ github.event.inputs.project || '.' }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          platforms: ${{ github.event.inputs.platforms }}
           push: true
           file: ${{ github.event.inputs.dockerfile }}
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project || github.repository }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.project || github.repository }}:${{ github.event.inputs.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.repo_name }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.repo_name }}:${{ github.event.inputs.tag }}
