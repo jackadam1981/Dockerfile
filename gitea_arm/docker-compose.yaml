@@ -1,16 +1,15 @@
 services:
-    gitea-arm:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            args:
-
-                # check in URL: https://dl.gitea.com/gitea/
-                GITEA_BIN_VERSION: 1.23.1
-                # check in URL: https://github.com/go-gitea/gitea/branches
-                GITEA_SOURCE_VERSION: release/v1.23
-                # platforms: linux-amd64,arm64,386,arm-5,arm-6
-                PLATFORMS: arm-6
-        ports:
-            - "18022:22"
-            - "3000:3000"
+  server:
+    image: jackadam/gitea-arm:1.23.1
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    volumes:
+      # - ./gitea_data:/data
+      # - ./config:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000"
+      - "222:22"
