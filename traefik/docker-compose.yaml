@@ -12,9 +12,17 @@ services:
       - "--entryPoints.web.address=:80"
       # 入口点 HTTPS 443
       - "--entryPoints.websecure.address=:443"
+      # 配置 HTTP 自动跳转 HTTPS
+      - "--entryPoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entrypoint.scheme=https"
+      # 指定重定向到外部映射端口 18443，跳443则删除这行
+      - "--entryPoints.web.http.redirections.entrypoint.port=18443"
+      # 配置 DNS 自动申请证书 证书管理器名为 myresolver
+      # 使用cloudflare API DNS TXT 记录 进行域名所有权挑战
       - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.email=jackadam1981@hotmail.com"
+      # 证书存储路径
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       # Enable Traefik logging
       - "--log.level=DEBUG"
