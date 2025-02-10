@@ -1,0 +1,43 @@
+services:
+  reverse-proxy:
+    # The official v3 Traefik docker image
+    image: traefik
+    restart: always
+    command: 
+      # 测试环境，启用api
+      - "--api.insecure=true"
+      # 启用监听docker
+      - "--providers.docker"
+      # 入口点 HTTP 80
+      - "--entryPoints.web.address=:80"
+      # 入口点 HTTPS 443
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.myresolver.acme.email=jackadam1981@hotmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      # Enable Traefik logging
+      - "--log.level=DEBUG"
+      - "--log.filePath=/var/log/traefik.log"
+    environment:
+      - CF_DNS_API_TOKEN=AsfVcuQ0g2v1DPkEFiv1aL74_8wGWfvQHCNFMvgG
+    ports:
+      # 突破家庭宽带，用18080
+      - "18080:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+      # 突破家庭宽带，用18443
+      - "18443:443"
+    volumes:
+      # 监听docker映射
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./letsencrypt:/letsencrypt"
+      # Mount a volume for logs
+      - "./logs:/var/log"
+networks:
+  #未设置网络时，使用默认网络
+  default:
+    #自定义默认网络名
+    name: mynet
+    #启用ipv6
+    enable_ipv6: true
