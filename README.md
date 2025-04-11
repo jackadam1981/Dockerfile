@@ -15,7 +15,7 @@
 Client: Docker Engine - Community
  Version:    28.0.4
 
-手动创建一个支持v6的网络
+手动创建一个支持v6的网络v6net
 
 ```
  docker network create --ipv6 v6net
@@ -35,7 +35,9 @@ networks:
     name: v6net
 
 ```
+
 手动运行该容器测试
+
 ```
 root@onecloud:/storage/build# docker compose -f test_ipv6.yaml up
 [+] Running 1/1
@@ -54,8 +56,15 @@ busybox-1 exited with code 0
 
 ```
 
+## 各个服务目录
 
+点进各个服务目录，一般会有单独的readme。介绍怎么使用。
 
+一般会提供.env.example，复制为.env，编辑后再启动即可。
 
+docker compose up -d
 
-## Treafik
+| 序号 | 名称    | 简介                                                      |
+| ---- | ------- | --------------------------------------------------------- |
+| 1    | traefik | 反向代理服务，自带acme，配置cloudflaer dns挑战，替代nginx |
+|      |         |                                                           |

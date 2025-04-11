@@ -1,0 +1,59 @@
+services:
+  reverse-proxy:
+    # The official v3 Traefik docker image
+    image: traefik
+    container_name: traefik
+    restart: always
+    command: 
+      # Dashboard和API配置
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
+      # 启用监听docker
+      - "--providers.docker"
+      # 入口点 HTTP 80
+      - "--entryPoints.web.address=:80"
+      # 入口点 HTTPS 443
+      - "--entryPoints.websecure.address=:443"
+      # 入口点 Dashboard 8080
+      - "--entryPoints.traefik.address=:8080"
+      # 配置 HTTP 自动跳转 HTTPS
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      # 配置 DNS 自动申请证书 证书管理器名为 myresolver
+      # 使用cloudflare API DNS TXT 记录 进行域名所有权挑战
+      - "--certificatesresolvers.${CERT_RESOLVER_NAME}.acme.dnschallenge=true"
+      - "--certificatesresolvers.${CERT_RESOLVER_NAME}.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.${CERT_RESOLVER_NAME}.acme.email=${ACME_EMAIL}"
+      # 证书存储路径
+      - "--certificatesresolvers.${CERT_RESOLVER_NAME}.acme.storage=/letsencrypt/acme.json"
+      # Enable Traefik logging
+      - "--log.level=DEBUG"
+      - "--log.filePath=/var/log/traefik.log"
+    environment:
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+    labels:
+      # Dashboard路由配置
+      - "traefik.http.routers.dashboard.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=traefik"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${DASHBOARD_AUTH}"
+      - "traefik.http.middlewares.auth.basicauth.removeheader=true"
+    ports:
+      # HTTP端口
+      - "${HTTP_PORT}:80"
+      # The Web UI (enabled by --api.dashboard=true)
+      - "${DASHBOARD_PORT}:8080"
+      # HTTPS端口
+      - "${HTTPS_PORT}:443"
+    volumes:
+      # 监听docker映射
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # 证书存储路径
+      - "./letsencrypt:/letsencrypt"
+      # 日志存储路径
+      - "./logs:/var/log"
+networks:
+  default:
+    external: true
+    name: ${NETWORK_NAME}
