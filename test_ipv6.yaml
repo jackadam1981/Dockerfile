@@ -1,0 +1,9 @@
+services:
+  busybox:
+    image: busybox
+    command: ping6 -c 4 music.163.com
+
+networks:
+  default:
+    external: true
+    name: v6net
