@@ -1,4 +1,3 @@
-
 # DockerFile
 
 本仓库为本人经常使用的DockerFile  docker-compose.yaml
@@ -7,14 +6,19 @@
 
 ## IPv6
 
-以前是这么干的
-
 [docker compose ipv6的处理 容器互联的方法 - 上官飞鸿 - 博客园](https://www.cnblogs.com/jackadam/p/16617369.html)
-
-现在似乎方便了。
 
 Client: Docker Engine - Community
  Version:    28.0.4
+
+修改/etc/docker/daemon.json
+
+```
+{
+    "experimental": true,
+    "ip6tables": true
+}
+```
 
 手动创建一个支持v6的网络v6net
 
@@ -68,4 +72,4 @@ docker compose up -d
 | 序号 | 名称    | 简介                                                      |
 | ---- | ------- | --------------------------------------------------------- |
 | 1    | traefik | 反向代理服务，自带acme，配置cloudflaer dns挑战，替代nginx |
-|      |         |                                                           |
+| 2    | onenav  | 一个开源轻量的导航页                                      |
