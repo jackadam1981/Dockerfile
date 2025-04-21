@@ -1,0 +1,76 @@
+name: Build from repo URL
+
+# 需要设置的变量
+# DOCKERHUB_USERNAME dockerhub的账号
+# DOCKERHUB_PASSWORD dockerhub的密码
+# 需要设置的输入
+# reop_name dockerhub的项目名
+# reop_url 项目的clone地址
+# version 标识的版本
+# dockerfile_path Dockerfile路径 (可选，如果不在根目录)
+
+on:
+    workflow_dispatch:
+        inputs:
+            reop_name:
+                description: 'Name,DockerHub的项目名'
+                required: true
+                default: 
+            reop_url:
+                description: 'RepoUrl,项目的clone地址，里面要有dockerfile'
+                required: true
+                default: 
+            version:
+                description: 'VERSION，标识的版本'
+                required: true
+                default: 
+            dockerfile_path:
+                description: 'Dockerfile路径 (可选，如果不在根目录)'
+                required: false
+                default: 'Dockerfile'
+
+run-name: ${{ github.actor }} is testing build ${{ github.event.inputs.reop_name }}:${{ github.event.inputs.version }} from ${{ github.event.inputs.reop_url }} 🚀
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Clone custom repository
+        run: git clone ${{ github.event.inputs.reop_url }} .
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+            username: "${{ secrets.DOCKERHUB_USERNAME }}"
+            password: "${{ secrets.DOCKERHUB_PASSWORD }}"
+      
+      - name: Build and push images
+        uses: docker/build-push-action@v4
+        with:
+            context: .
+            file: ${{ github.event.inputs.dockerfile_path }}
+            platforms: linux/arm/v6,linux/arm/v7,amd64,linux/arm64
+            push: true
+            tags: "jackadam/${{ github.event.inputs.reop_name }}:${{ github.event.inputs.version }},jackadam/${{ github.event.inputs.reop_name }}:latest"
+      
+        # 现在仓库应该已存在，可以更新描述
+      - name: push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+            DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKER_PASS: ${{ secrets.DOCKERHUB_PASSWORD }}
+        with:
+            destination_container_repo: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.reop_name }}
+            provider: dockerhub
+            short_description: 'my short description 😊'
+            readme_file: 'README.md'
