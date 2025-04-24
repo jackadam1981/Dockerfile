@@ -1,0 +1,29 @@
+name: gitea
+services:
+  gitea:
+    image: jackadam/gitea-arm:1.23.1
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    ports:
+      - "${GITEA_PORT}:3000"
+      - "${GITEA_SSH_PORT}:22"
+    volumes:
+      - ${DATA_DIR}:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitea.rule=Host(`${GITEA_DOMAIN}`)"
+      - "traefik.http.routers.gitea.entrypoints=websecure"
+      - "traefik.http.routers.gitea.tls.certresolver=myresolver"
+      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+networks:
+  #未设置网络时，使用默认网络
+  default:
+    #自定义默认网络名
+    name: ${NETWORK_NAME}
+    #启用ipv6
+    enable_ipv6: ${ENABLE_IPV6}
