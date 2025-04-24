@@ -4,16 +4,20 @@ name: Build from repo URL
 # DOCKERHUB_USERNAME dockerhub的账号
 # DOCKERHUB_PASSWORD dockerhub的密码
 # 需要设置的输入
-# reop_name dockerhub的项目名
+# reop_name dockerhub的项目名(必填，全小写)
 # reop_url 项目的clone地址
 # version 标识的版本
 # dockerfile_path Dockerfile路径 (可选，如果不在根目录)
+# platform_armv6 是否构建 ARM v6
+# platform_armv7 是否构建 ARM v7
+# platform_amd64 是否构建 AMD64
+# platform_arm64 是否构建 ARM64
 
 on:
     workflow_dispatch:
         inputs:
             reop_name:
-                description: 'Name,DockerHub的项目名'
+                description: 'Name,DockerHub的项目名(必填，全小写)'
                 required: true
                 default: 
             reop_url:
@@ -28,6 +32,26 @@ on:
                 description: 'Dockerfile路径 (可选，如果不在根目录)'
                 required: false
                 default: 'Dockerfile'
+            platform_armv6:
+                description: '是否构建 ARM v6 平台'
+                required: false
+                type: boolean
+                default: true
+            platform_armv7:
+                description: '是否构建 ARM v7 平台'
+                required: false
+                type: boolean
+                default: true
+            platform_amd64:
+                description: '是否构建 AMD64 平台'
+                required: false
+                type: boolean
+                default: true
+            platform_arm64:
+                description: '是否构建 ARM64 平台'
+                required: false
+                type: boolean
+                default: true
 
 run-name: ${{ github.actor }} is testing build ${{ github.event.inputs.reop_name }}:${{ github.event.inputs.version }} from ${{ github.event.inputs.reop_url }} 🚀
 
@@ -54,12 +78,32 @@ jobs:
             username: "${{ secrets.DOCKERHUB_USERNAME }}"
             password: "${{ secrets.DOCKERHUB_PASSWORD }}"
       
+      - name: Set platforms
+        id: set_platforms
+        run: |
+          PLATFORMS=""
+          if [ "${{ github.event.inputs.platform_armv6 }}" = "true" ]; then
+            PLATFORMS="$PLATFORMS linux/arm/v6,"
+          fi
+          if [ "${{ github.event.inputs.platform_armv7 }}" = "true" ]; then
+            PLATFORMS="$PLATFORMS linux/arm/v7,"
+          fi
+          if [ "${{ github.event.inputs.platform_amd64 }}" = "true" ]; then
+            PLATFORMS="$PLATFORMS amd64,"
+          fi
+          if [ "${{ github.event.inputs.platform_arm64 }}" = "true" ]; then
+            PLATFORMS="$PLATFORMS linux/arm64"
+          fi
+          # Remove trailing comma if exists
+          PLATFORMS=$(echo $PLATFORMS | sed 's/,$//')
+          echo "PLATFORMS=$PLATFORMS" >> $GITHUB_OUTPUT
+      
       - name: Build and push images
         uses: docker/build-push-action@v4
         with:
             context: .
             file: ${{ github.event.inputs.dockerfile_path }}
-            platforms: linux/arm/v6,linux/arm/v7,amd64,linux/arm64
+            platforms: ${{ steps.set_platforms.outputs.PLATFORMS }}
             push: true
             tags: "jackadam/${{ github.event.inputs.reop_name }}:${{ github.event.inputs.version }},jackadam/${{ github.event.inputs.reop_name }}:latest"
       
