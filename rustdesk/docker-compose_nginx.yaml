@@ -1,0 +1,53 @@
+services:
+
+  rustdesk-server:
+    container_name: rustdesk-server
+    ports:
+      - 21115:21115
+      - 21116:21116
+      - 21116:21116/udp
+      - 21117:21117
+    image: rustdesk/rustdesk-server-s6:latest
+    environment:
+      - RELAY=rustdesk.jackadam.top
+      - ENCRYPTED_ONLY=1
+    volumes:
+      - ./data/server:/data
+    restart: unless-stopped
+
+  rustdesk-api:
+    container_name: rustdesk-api
+    image: lejianwen/rustdesk-api
+    environment:
+      - TZ=Asia/Shanghai
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=${ID_SERVER}:${ID_PORT}
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RELAY_SERVER}:${RELAY_PORT}
+      - RUSTDESK_API_RUSTDESK_API_SERVER=${API_SERVER}:${NGINX_PORT}
+      - RUSTDESK_API_KEY_FILE=/data/id_ed25519.pub
+    volumes:
+      - ./data/api:/app/data
+      - ./data/server:/app/conf/data
+    restart: unless-stopped
+    depends_on:
+      - rustdesk-server
+
+  nginx:
+    container_name: rustdesk-nginx
+    image: nginx:latest
+    ports:
+      - ${NGINX_PORT}:443 # conf.d/default.conf 中配置的端口
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./ssl:/etc/nginx/ssl
+    restart: unless-stopped
+    depends_on:
+      - rustdesk-api
+      - rustdesk-server
+
+networks:
+  #未设置网络时，使用默认网络
+  default:
+    #自定义默认网络名
+    name: ${NETWORK_NAME}
+    # 使用外部网络
+    external: true

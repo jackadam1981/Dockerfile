@@ -1,0 +1,67 @@
+services:
+  rustdesk:
+    ports:
+      - 21114:21114
+      - 21115:21115
+      - 21116:21116
+      - 21116:21116/udp
+      - 21117:21117
+      - 21118:21118
+      - 21119:21119
+    image: lejianwen/rustdesk-server-s6:latest
+    container_name: rustdesk
+    environment:
+      - RELAY=${RELAY_SERVER}
+      - ENCRYPTED_ONLY=${ENCRYPTED_ONLY}
+      - MUST_LOGIN=${MUST_LOGIN}
+      - TZ=${TZ}
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=${ID_SERVER}:${ID_PORT}
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RELAY_SERVER}:${RELAY_PORT}
+      - RUSTDESK_API_RUSTDESK_API_SERVER=${API_SERVER}:${TRAEFIK_PORT}
+      - RUSTDESK_API_KEY_FILE=/data/id_ed25519.pub
+      - RUSTDESK_API_JWT_KEY=${JWT_KEY}
+    volumes:
+      - ./data/server:/data
+      - ./data/api:/app/data #将数据库挂载
+    restart: unless-stopped
+    labels:
+       # Main API service
+       - "traefik.enable=true"
+       - "traefik.http.routers.rustdesk-api.rule=Host(`${DOMAIN}`)"
+       - "traefik.http.routers.rustdesk-api.entrypoints=websecure"
+       - "traefik.http.routers.rustdesk-api.tls.certresolver=${CERTIFICATE_MANAGER}"
+       - "traefik.http.routers.rustdesk-api.service=rustdesk-api"
+       - "traefik.http.services.rustdesk-api.loadbalancer.server.port=21114"
+       
+       # WebSocket中间件
+       - "traefik.http.middlewares.ws-headers.headers.customrequestheaders.Upgrade=websocket"
+       - "traefik.http.middlewares.ws-headers.headers.customrequestheaders.Connection=Upgrade"
+       - "traefik.http.middlewares.ws-headers.headers.customrequestheaders.Host=$${host}"
+       - "traefik.http.middlewares.ws-headers.headers.customrequestheaders.X-Real-IP=$${remote_addr}"
+       - "traefik.http.middlewares.ws-headers.headers.customrequestheaders.X-Forwarded-For=$${proxy_add_x_forwarded_for}"
+       - "traefik.http.middlewares.ws-headers.headers.customrequestheaders.X-Forwarded-Proto=$${scheme}"
+       
+       # WebSocket ID service
+       - "traefik.http.routers.rustdesk-ws-id.rule=Host(`${DOMAIN}`) && PathPrefix(`/ws/id`)"
+       - "traefik.http.routers.rustdesk-ws-id.entrypoints=websecure"
+       - "traefik.http.routers.rustdesk-ws-id.tls.certresolver=${CERTIFICATE_MANAGER}"
+       - "traefik.http.routers.rustdesk-ws-id.service=rustdesk-ws-id"
+       - "traefik.http.services.rustdesk-ws-id.loadbalancer.server.port=21118"
+       - "traefik.http.routers.rustdesk-ws-id.middlewares=ws-headers"
+       
+       # WebSocket Relay service
+       - "traefik.http.routers.rustdesk-ws-relay.rule=Host(`${DOMAIN}`) && PathPrefix(`/ws/relay`)"
+       - "traefik.http.routers.rustdesk-ws-relay.entrypoints=websecure"
+       - "traefik.http.routers.rustdesk-ws-relay.tls.certresolver=${CERTIFICATE_MANAGER}"
+       - "traefik.http.routers.rustdesk-ws-relay.service=rustdesk-ws-relay"
+       - "traefik.http.services.rustdesk-ws-relay.loadbalancer.server.port=21119"
+       - "traefik.http.routers.rustdesk-ws-relay.middlewares=ws-headers"
+
+
+networks:
+  #未设置网络时，使用默认网络
+  default:
+    #自定义默认网络名
+    name: ${NETWORK_NAME}
+    # 使用外部网络
+    external: true
