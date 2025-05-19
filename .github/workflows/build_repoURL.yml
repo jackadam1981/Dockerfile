@@ -12,6 +12,7 @@ name: Build from repo URL
 # platform_armv7 是否构建 ARM v7
 # platform_amd64 是否构建 AMD64
 # platform_arm64 是否构建 ARM64
+# custom_command 自定义命令 (可选，用于在构建前执行，例如: sed -i 's/ubuntu:focal/alpine:3.18/g' Dockerfile)
 
 on:
     workflow_dispatch:
@@ -52,6 +53,10 @@ on:
                 required: false
                 type: boolean
                 default: true
+            custom_command:
+                description: '自定义命令 (可选，用于在构建前执行，例如: sed -i "s/ubuntu:focal/alpine:3.18/g" Dockerfile)'
+                required: false
+                default: ''
 
 run-name: ${{ github.actor }} is testing build ${{ github.event.inputs.reop_name }}:${{ github.event.inputs.version }} from ${{ github.event.inputs.reop_url }} 🚀
 
@@ -65,6 +70,10 @@ jobs:
     
       - name: Clone custom repository
         run: git clone ${{ github.event.inputs.reop_url }} .
+
+      - name: Execute custom command
+        if: ${{ github.event.inputs.custom_command != '' }}
+        run: ${{ github.event.inputs.custom_command }}
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
@@ -89,7 +98,7 @@ jobs:
             PLATFORMS="$PLATFORMS linux/arm/v7,"
           fi
           if [ "${{ github.event.inputs.platform_amd64 }}" = "true" ]; then
-            PLATFORMS="$PLATFORMS amd64,"
+            PLATFORMS="$PLATFORMS linux/amd64,"
           fi
           if [ "${{ github.event.inputs.platform_arm64 }}" = "true" ]; then
             PLATFORMS="$PLATFORMS linux/arm64"
